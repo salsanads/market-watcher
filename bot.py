@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 
 from services.fx import get_idr_rates
 from services.stocks import get_ihsg, get_stock_price
+from web import start_web_server
 
 load_dotenv()
 
@@ -64,6 +65,7 @@ async def scheduler():
 @client.event
 async def on_ready():
     print(f"Logged in as {client.user}")
+    start_web_server()
     await send_market_update()
     client.loop.create_task(scheduler())
 
