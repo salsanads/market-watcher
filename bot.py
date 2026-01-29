@@ -66,7 +66,6 @@ async def scheduler():
 async def on_ready():
     print(f"Logged in as {client.user}")
     start_web_server()
-    await send_market_update()
     client.loop.create_task(scheduler())
 
 
