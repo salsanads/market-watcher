@@ -15,5 +15,9 @@ async def get_stock_price(symbol: str):
     return await asyncio.to_thread(fetch)
 
 
-async def get_ihsg():
-    return await get_stock_price("^JKSE")
+async def get_stocks(symbols):
+    stocks = {}
+    for symbol in symbols:
+        stock = await get_stock_price(symbol)
+        stocks[symbol] = stock
+    return stocks

@@ -6,7 +6,7 @@ from datetime import datetime
 from dotenv import load_dotenv
 
 from services.fx import get_idr_rates
-from services.stocks import get_ihsg
+from services.stocks import get_stocks
 
 load_dotenv()
 
@@ -14,6 +14,7 @@ TOKEN = os.getenv("DISCORD_TOKEN")
 CHANNEL_ID = int(os.getenv("DISCORD_CHANNEL_ID"))
 
 CURRENCIES = os.getenv("CURRENCIES").split(",")
+SYMBOLS = os.getenv("SYMBOLS").split(",")
 
 intents = discord.Intents.default()
 client = discord.Client(intents=intents)
@@ -29,7 +30,7 @@ async def send_market_update():
 
     try:
         fx = await get_idr_rates(CURRENCIES)
-        ihsg = await get_ihsg()
+        stocks = await get_stocks(SYMBOLS)
 
         now = datetime.now(TZ)
         date_str = now.strftime("%A, %d %B %Y")
@@ -43,10 +44,11 @@ async def send_market_update():
         message += "\n"
         
         message += f"**📈 Stocks**\n"
-        if ihsg["price"] is None:
-            message += "N/A\n\n"
-        else:
-            message += f"IHSG: {ihsg['price']:,.2f}"
+        for symbol in SYMBOLS:
+            if stocks[symbol]["price"] is None:
+                message += "N/A\n"
+            else:
+                message += f"{symbol}: {stocks[symbol]['price']:,.2f}\n"
 
         await channel.send(message)
 
