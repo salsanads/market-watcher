@@ -1,7 +1,6 @@
 import aiohttp
 
-USD_API = "https://open.er-api.com/v6/latest/USD"
-SGD_API = "https://open.er-api.com/v6/latest/SGD"
+BASE_API = "https://open.er-api.com/v6/latest/{currency}"
 
 
 async def fetch_rate(session, url):
@@ -14,12 +13,11 @@ async def fetch_rate(session, url):
     return data["rates"]["IDR"]
 
 
-async def get_idr_rates():
+async def get_idr_rates(currencies):
+    rates = {}
     async with aiohttp.ClientSession() as session:
-        usd_idr = await fetch_rate(session, USD_API)
-        sgd_idr = await fetch_rate(session, SGD_API)
+        for currency in currencies:
+            value = await fetch_rate(session, BASE_API.format(currency=currency))
+            rates[currency] = value
 
-    return {
-        "USD": usd_idr,  # 1 USD = X IDR
-        "SGD": sgd_idr   # 1 SGD = X IDR
-    }
+    return rates

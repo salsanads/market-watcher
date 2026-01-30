@@ -13,6 +13,8 @@ load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
 CHANNEL_ID = int(os.getenv("DISCORD_CHANNEL_ID"))
 
+CURRENCIES = os.getenv("CURRENCIES").split(",")
+
 intents = discord.Intents.default()
 client = discord.Client(intents=intents)
 
@@ -26,7 +28,7 @@ async def send_market_update():
         return
 
     try:
-        fx = await get_idr_rates()
+        fx = await get_idr_rates(CURRENCIES)
         ihsg = await get_ihsg()
 
         now = datetime.now(TZ)
@@ -35,8 +37,11 @@ async def send_market_update():
         # Build Discord message
         message = f"**📊 Daily Market Update\n{date_str}**\n\n"
         message += f"**💱 FX Rates**\n"
-        message += f"1 USD = {fx['USD']:,.0f} IDR\n"
-        message += f"1 SGD = {fx['SGD']:,.0f} IDR\n\n"
+
+        for currency in CURRENCIES:
+            message += f"1 {currency} = {fx[currency]:,.0f} IDR\n"
+        message += "\n"
+        
         message += f"**📈 Stocks**\n"
         if ihsg["price"] is None:
             message += "N/A\n\n"
