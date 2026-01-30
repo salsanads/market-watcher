@@ -1,11 +1,8 @@
 name: Market Watcher
-env:
-  DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
-  DISCORD_CHANNEL_ID: ${{ secrets.DISCORD_CHANNEL_ID }}
 
 on:
   schedule:
-    - cron: '0 3 * * *'
+    - cron: '0 4 * * *'
   workflow_dispatch:
 
 jobs:
@@ -25,4 +22,7 @@ jobs:
         pip install -r requirements.txt
 
     - name: Run Bot Script
+      env:
+        DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+        DISCORD_CHANNEL_ID: ${{ secrets.DISCORD_CHANNEL_ID }}
       run: python bot.py
