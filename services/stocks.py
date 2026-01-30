@@ -1,7 +1,7 @@
 import yfinance as yf
 import asyncio
 
-async def get_stock_price(symbol: str):
+async def get_price(symbol: str):
     def fetch():
         stock = yf.Ticker(symbol)
         hist = stock.history(period="1d")
@@ -18,6 +18,6 @@ async def get_stock_price(symbol: str):
 async def get_stocks(symbols):
     stocks = {}
     for symbol in symbols:
-        stock = await get_stock_price(symbol)
+        stock = await get_price(symbol)
         stocks[symbol] = stock
     return stocks

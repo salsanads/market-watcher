@@ -44,4 +44,6 @@ jobs:
         BASE_CURRENCY: ${{ vars.BASE_CURRENCY }}
         CURRENCIES: ${{ vars.CURRENCIES }}
         SYMBOLS: ${{ vars.SYMBOLS }}
+        GOODS: ${{ vars.GOODS }}
+        TIMEZONE: ${{ vars.TIMEZONE }}
       run: python bot.py

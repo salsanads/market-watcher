@@ -5,13 +5,13 @@
 ![License: MIT](https://img.shields.io/badge/License-MIT-green)
 ![Scheduled: Daily](https://img.shields.io/badge/schedule-daily-orange)
 
-A configurable Python Discord bot that posts **daily foreign exchange rates** and **stock prices** to a **Discord** channel.
+A configurable Python Discord bot that posts **daily foreign exchange rates**, **stock**, and **commodities prices** to a **Discord** channel.
 
 Built to run as a one-shot scheduled job using GitHub Actions — no servers, no background workers, no idle costs.
 
 ## ✨ Features
 - Configurable base currency (default: `IDR`)
-- Multiple currency pairs via a single config
+- Multiple currency exchange in one config
 - Configurable market symbols using Yahoo Finance (`yfinance`)
 - Scheduled execution via GitHub Actions (cron)
 - Sends one Discord message and exits cleanly
@@ -35,6 +35,10 @@ Friday, 30 January 2026
 ^JKSE: 8,329.15
 TLKM.JK: 3,680.00
 META: 738.31
+
+⛏️ Commodities
+Gold: 2,785,436.35 IDR
+Silver: 55,950.42 IDR
 ```
 
 ## 🌍 Environments
@@ -69,16 +73,18 @@ or
 | Variable | Required | Description | Example |
 |---|:---:|---|---|
 | `BASE_CURRENCY` |	❌ | Base currency for FX rates (default: `IDR`) | `IDR`
-| `CURRENCIES` | ✅ | Comma-separated currency list without spaces | `USD,SGD,EUR`
-| `SYMBOLS` | ✅ | Comma-separated market symbol list without spaces (see the symbol format below) | `^JKSE,TLKM.JK,META`
+| `CURRENCIES` | ✅ | Comma-separated currency list | `USD,SGD,EUR`
+| `SYMBOLS` | ✅ | Comma-separated list of stock in Yahoo Finance symbols (see the symbol format below) | `^JKSE,TLKM.JK,META`
+| `GOODS` | ❌ | Comma-separated list of commodities with their Yahoo Finance symbols (`Name:Symbol`, see the symbol format below, default: `Gold:GC=F,Silver:SI=F`) | `Gold:GC=F,Silver:SI=F`
 | `TIMEZONE` |	❌ | Timezone for the date in Discord message (default: `Asia/Singapore`) | `Asia/Singapore`
 
-## 📈 Market Symbols (`SYMBOLS` variable)
-Symbols must follow `yfinance` or Yahoo Finance conventions.
+## 📈 Stock and Commodities Symbols (`SYMBOLS` and `GOODS` variables)
+The stock and commodities symbols must follow `yfinance` or Yahoo Finance conventions.
 
 Example:
 ```bash
 SYMBOLS=^JKSE,TLKM.JK,META,AAPL,TSLA
+GOODS=Gold:GC=F,Silver:SI=F
 ```
 
 ### Common formats
@@ -88,6 +94,7 @@ SYMBOLS=^JKSE,TLKM.JK,META,AAPL,TSLA
 | US stocks | `AAPL`, `META`, `TSLA` |
 | Indonesia stocks | `BBCA.JK`, `TLKM.JK` |
 | Other exchanges | Use exchange suffix (e.g. `.L`, `.HK`) |
+| Commodities | `GC=F` (gold), `SI=F` (silver) |
 
 ### 🔎 How to find symbols
 Most symbols available on Yahoo Finance will work. Search on Yahoo Finance and use the ticker shown: https://finance.yahoo.com.
@@ -123,6 +130,7 @@ DISCORD_CHANNEL_ID=your_channel_id
 BASE_CURRENCY=IDR
 CURRENCIES=USD,SGD,MYR,AUD,EUR,GBP
 SYMBOLS=^JKSE,TLKM.JK,META
+GOODS=Gold:GC=F,Silver:SI=F
 TIMEZONE=Asia/Singapore
 ```
 
