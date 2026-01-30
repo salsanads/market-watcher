@@ -32,7 +32,7 @@ async def send_market_update():
         date_str = now.strftime("%A, %d %B %Y")
 
         # Build Discord message
-        message = f"**📊 Daily Market Update - {date_str}**\n\n"
+        message = f"**📊 Daily Market Update\n{date_str}**\n\n"
         message += f"**💱 FX Rates**\n"
         message += f"1 USD = {fx['USD']:,.0f} IDR\n"
         message += f"1 SGD = {fx['SGD']:,.0f} IDR\n\n"
