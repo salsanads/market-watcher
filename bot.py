@@ -1,3 +1,4 @@
+import asyncio
 import os
 import discord
 import pytz
@@ -19,7 +20,7 @@ TZ = pytz.timezone("Asia/Singapore")  # UTC+8
 
 
 async def send_market_update():
-    channel = client.get_channel(CHANNEL_ID)
+    channel = await client.fetch_channel(CHANNEL_ID)
     if channel is None:
         print("Channel not found")
         return
@@ -48,10 +49,9 @@ async def send_market_update():
         print("Failed to fetch or send market data:", e)
 
 
-@client.event
-async def on_ready():
-    print(f"Logged in as {client.user}")
+async def main():
+    await client.login(TOKEN)
     await send_market_update()
+    await client.close()
 
-
-client.run(TOKEN)
+asyncio.run(main())
