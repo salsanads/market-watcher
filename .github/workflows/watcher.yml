@@ -41,6 +41,7 @@ jobs:
       env:
         DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
         DISCORD_CHANNEL_ID: ${{ secrets.DISCORD_CHANNEL_ID }}
+        BASE_CURRENCY: ${{ vars.BASE_CURRENCY }}
         CURRENCIES: ${{ vars.CURRENCIES }}
         SYMBOLS: ${{ vars.SYMBOLS }}
       run: python bot.py

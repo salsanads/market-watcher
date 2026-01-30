@@ -5,7 +5,7 @@ import pytz
 from datetime import datetime
 from dotenv import load_dotenv
 
-from services.fx import get_idr_rates
+from services.fx import get_rates
 from services.stocks import get_stocks
 
 load_dotenv()
@@ -13,6 +13,7 @@ load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
 CHANNEL_ID = int(os.getenv("DISCORD_CHANNEL_ID"))
 
+BASE_CURRENCY = os.getenv("BASE_CURRENCY", "IDR")
 CURRENCIES = os.getenv("CURRENCIES").split(",")
 SYMBOLS = os.getenv("SYMBOLS").split(",")
 
@@ -29,7 +30,7 @@ async def send_market_update():
         return
 
     try:
-        fx = await get_idr_rates(CURRENCIES)
+        fx = await get_rates(BASE_CURRENCY, CURRENCIES)
         stocks = await get_stocks(SYMBOLS)
 
         now = datetime.now(TZ)
@@ -40,7 +41,7 @@ async def send_market_update():
         message += f"**💱 FX Rates**\n"
 
         for currency in CURRENCIES:
-            message += f"1 {currency} = {fx[currency]:,.0f} IDR\n"
+            message += f"1 {currency} = {fx[currency]:,.2f} {BASE_CURRENCY}\n"
         message += "\n"
         
         message += f"**📈 Stocks**\n"
