@@ -1,13 +1,11 @@
 import os
 import discord
 import pytz
-import asyncio
-from datetime import datetime, time, timedelta
+from datetime import datetime
 from dotenv import load_dotenv
 
 from services.fx import get_idr_rates
-from services.stocks import get_ihsg, get_stock_price
-from web import start_web_server
+from services.stocks import get_ihsg
 
 load_dotenv()
 
@@ -50,23 +48,10 @@ async def send_market_update():
         print("Failed to fetch or send market data:", e)
 
 
-async def scheduler():
-    await client.wait_until_ready()
-    while not client.is_closed():
-        now = datetime.now(TZ)
-        target = datetime.combine(now.date(), time(10, 0), tzinfo=TZ)
-        if now >= target:
-            target += timedelta(days=1)
-        sleep_seconds = (target - now).total_seconds()
-        await asyncio.sleep(sleep_seconds)
-        await send_market_update()
-
-
 @client.event
 async def on_ready():
     print(f"Logged in as {client.user}")
-    start_web_server()
-    client.loop.create_task(scheduler())
+    await send_market_update()
 
 
 client.run(TOKEN)
