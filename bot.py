@@ -17,10 +17,10 @@ BASE_CURRENCY = os.getenv("BASE_CURRENCY", "IDR")
 CURRENCIES = os.getenv("CURRENCIES").split(",")
 SYMBOLS = os.getenv("SYMBOLS").split(",")
 
+TZ = pytz.timezone(os.getenv("TIMEZONE", "Asia/Singapore"))
+
 intents = discord.Intents.default()
 client = discord.Client(intents=intents)
-
-TZ = pytz.timezone("Asia/Singapore")  # UTC+8
 
 
 async def send_market_update():
