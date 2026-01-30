@@ -2,12 +2,13 @@ name: Market Watcher
 
 on:
   schedule:
-    - cron: '0 4 * * *'
+    - cron: '15 4 * * *'
   workflow_dispatch:
 
 jobs:
   watcher:
     runs-on: ubuntu-latest
+    environment: production
     steps:
     - uses: actions/checkout@v6
 
