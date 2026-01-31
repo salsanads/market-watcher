@@ -66,7 +66,7 @@ These variables are **required**.
 | `DISCORD_TOKEN`	| Discord bot token |
 | `DISCORD_CHANNEL_ID` | Target Discord channel ID |
 
-### 🔐 Secrets
+### 🌱 Variables
 (GitHub → Settings → Secrets and variables → Actions → Variables)
 
 or
