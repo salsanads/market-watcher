@@ -1,6 +1,6 @@
 # 📊 Market Watcher Discord Bot
 
-[![GitHub Workflow Status](https://github.com/salsanads/market-watcher/actions/workflows/watcher.yml/badge.svg?branch=main)](https://github.com/salsanads/market-watcher/actions/workflows/watcher.yml)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/salsanads/market-watcher/.github/workflows/watcher.yml?branch=main)](https://github.com/salsanads/market-watcher/actions/workflows/watcher.yml)
 ![Python Version](https://img.shields.io/badge/python-3.13-blue)
 ![License: MIT](https://img.shields.io/badge/License-MIT-green)
 ![Scheduled: Daily](https://img.shields.io/badge/schedule-daily-orange)
@@ -18,6 +18,8 @@ Built to run as a one-shot scheduled job using GitHub Actions — no servers, no
 - Can be run locally with a `.env` file
 - Free, serverless, and easy to maintain
 
+> Currently **only** supports commodities in **troy ounce price** and **sent in gram price**.
+
 ## 📬 Message Format
 ```
 📊 Daily Market Update
@@ -33,8 +35,7 @@ Friday, 30 January 2026
 
 📈 Stocks
 ^JKSE: 8,329.15
-TLKM.JK: 3,680.00
-META: 738.31
+^GSPC: 6,939.03
 
 ⛏️ Commodities
 Gold: 2,785,436.35 IDR
@@ -58,10 +59,12 @@ or
 
 (GitHub → Settings → Environments → `{environment}` → Secrets)
 
-| Variable | Required	| Description |
-|---|:---:|---|
-| `DISCORD_TOKEN`	| ✅ | Discord bot token |
-| `DISCORD_CHANNEL_ID` | ✅ | Target Discord channel ID |
+These variables are **required**.
+
+| Variable | Description |
+|---|---|
+| `DISCORD_TOKEN`	| Discord bot token |
+| `DISCORD_CHANNEL_ID` | Target Discord channel ID |
 
 ### 🔐 Secrets
 (GitHub → Settings → Secrets and variables → Actions → Variables)
@@ -70,20 +73,20 @@ or
 
 (GitHub → Settings → Environments → `{environment}` → Variables)
 
-| Variable | Required | Description | Example |
-|---|:---:|---|---|
-| `BASE_CURRENCY` |	❌ | Base currency for FX rates (default: `IDR`) | `IDR`
-| `CURRENCIES` | ✅ | Comma-separated currency list | `USD,SGD,EUR`
-| `SYMBOLS` | ✅ | Comma-separated list of stock in Yahoo Finance symbols (see the symbol format below) | `^JKSE,TLKM.JK,META`
-| `GOODS` | ❌ | Comma-separated list of commodities with their Yahoo Finance symbols (`Name:Symbol`, see the symbol format below, default: `Gold:GC=F,Silver:SI=F`) | `Gold:GC=F,Silver:SI=F`
-| `TIMEZONE` |	❌ | Timezone for the date in Discord message (default: `Asia/Singapore`) | `Asia/Singapore`
+| Variable | Description | Default |
+|---|---|---|
+| `BASE_CURRENCY` | Base currency for FX rates | `IDR` |
+| `CURRENCIES` | Comma-separated currency list | `USD,SGD,MYR,AUD,EUR,GBP` |
+| `SYMBOLS` | Comma-separated list of stock in Yahoo Finance symbols (see the symbol format below) | `^JKSE,^GSPC` |
+| `GOODS` | Comma-separated list of commodities with their Yahoo Finance symbols (`Name:Symbol`, see the symbol format below, currently **only** supports commodities in **troy ounce price** and **sent in gram price**) | `Gold:GC=F,Silver:SI=F` |
+| `TIMEZONE` | Timezone for the date in Discord message | `Asia/Jakarta` |
 
 ## 📈 Stock and Commodities Symbols (`SYMBOLS` and `GOODS` variables)
 The stock and commodities symbols must follow `yfinance` or Yahoo Finance conventions.
 
 Example:
 ```bash
-SYMBOLS=^JKSE,TLKM.JK,META,AAPL,TSLA
+SYMBOLS=^JKSE,^GSPC
 GOODS=Gold:GC=F,Silver:SI=F
 ```
 
@@ -105,9 +108,9 @@ The bot runs via GitHub Actions on a cron schedule.
 Default schedule:
 ```yml
 schedule:
-  - cron: '30 2 * * *'
+  - cron: '0 2 * * *'
 ```
-- Runs daily at **10:30 UTC+8**
+- Runs daily at **02:00 UTC** (the free GitHub Actions can be delayed)
 - The schedule can be adjusted directly in the workflow file
 - Manual runs supported via `workflow_dispatch`
 
@@ -129,15 +132,15 @@ DISCORD_CHANNEL_ID=your_channel_id
 ```bash
 BASE_CURRENCY=IDR
 CURRENCIES=USD,SGD,MYR,AUD,EUR,GBP
-SYMBOLS=^JKSE,TLKM.JK,META
+SYMBOLS=^JKSE,^GSPC
 GOODS=Gold:GC=F,Silver:SI=F
-TIMEZONE=Asia/Singapore
+TIMEZONE=Asia/Jakarta
 ```
 
 4. Install dependencies and run:
 ```bash
 pip install -r requirements.txt
-python bot_action.py
+python bot.py
 ```
 
 ## 🚀 How It Works

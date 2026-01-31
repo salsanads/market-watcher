@@ -17,13 +17,21 @@ if not TOKEN or not CHANNEL_ID:
     raise ValueError("DISCORD_TOKEN and DISCORD_CHANNEL_ID must be set")
 CHANNEL_ID = int(CHANNEL_ID)
 
-BASE_CURRENCY = os.getenv("BASE_CURRENCY").strip()
+BASE_CURRENCY = os.getenv("BASE_CURRENCY", "").strip()
 if not BASE_CURRENCY:
     BASE_CURRENCY = "IDR"
 
-CURRENCIES = [c.strip() for c in os.getenv("CURRENCIES").split(",") if c.strip()]
-SYMBOLS = [s.strip() for s in os.getenv("SYMBOLS").split(",") if s.strip()]
-goods_env = os.getenv("GOODS").strip()
+CURRENCIES = os.getenv("CURRENCIES", "").strip()
+if not CURRENCIES:
+    CURRENCIES = "USD,SGD,MYR,AUD,EUR,GBP"
+CURRENCIES = [c.strip() for c in CURRENCIES.split(",") if c.strip()]
+
+SYMBOLS = os.getenv("SYMBOLS", "").strip()
+if not SYMBOLS:
+    SYMBOLS = "^JKSE,^GSPC"
+SYMBOLS = [s.strip() for s in SYMBOLS.split(",") if s.strip()]
+
+goods_env = os.getenv("GOODS", "").strip()
 if not goods_env:
     goods_env = "Gold:GC=F,Silver:SI=F"
 GOODS = dict(
@@ -31,9 +39,9 @@ GOODS = dict(
     for item in goods_env.split(",") if item.strip()
 )
 
-TIMEZONE = os.getenv("TIMEZONE").strip()
+TIMEZONE = os.getenv("TIMEZONE", "").strip()
 if not TIMEZONE:
-    TIMEZONE = "Asia/Singapore"
+    TIMEZONE = "Asia/Jakarta"
 TZ = pytz.timezone(TIMEZONE)
 
 intents = discord.Intents.default()
