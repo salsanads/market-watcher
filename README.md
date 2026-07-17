@@ -5,7 +5,7 @@
 ![License: MIT](https://img.shields.io/badge/License-MIT-green)
 ![Scheduled: Daily](https://img.shields.io/badge/schedule-daily-orange)
 
-A configurable Python Discord bot that posts **daily foreign exchange rates**, **stock**, and **commodities prices** to a **Discord** channel.
+An open-source configurable Python Discord bot that posts **daily foreign exchange rates**, **stock**, and **commodities prices** to a **Discord** channel.
 
 Built to run as a one-shot scheduled job using GitHub Actions — no servers, no background workers, no idle costs.
 
